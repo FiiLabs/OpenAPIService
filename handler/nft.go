@@ -22,9 +22,10 @@ func NFTHandler(c *gin.Context) {
 		return
 	}
 	client := config.GetConfigClient()
+	cfg := config.GetConfig()
 	baseTx := types.BaseTx{
 		From:     req.UsrName,
-		Password: password,
+		Password: cfg.Server.Password,
 		Gas:      400000,
 		Memo:     "",
 		Mode:     types.Sync,
@@ -63,9 +64,10 @@ func NFTTransferHandler(c *gin.Context) {
 		return
 	}
 	client := config.GetConfigClient()
+	cfg := config.GetConfig()
 	baseTx := types.BaseTx{
 		From:     req.UsrName,
-		Password: password,
+		Password: cfg.Server.Password,
 		Gas:      400000,
 		Memo:     "",
 		Mode:     types.Sync,
@@ -111,9 +113,10 @@ func NFTEditHandler(c *gin.Context) {
 		return
 	}
 	client := config.GetConfigClient()
+	cfg := config.GetConfig()
 	baseTx := types.BaseTx{
 		From:     req.UsrName,
-		Password: password,
+		Password: cfg.Server.Password,
 		Gas:      400000,
 		Memo:     "",
 		Mode:     types.Sync,
@@ -139,6 +142,48 @@ func NFTEditHandler(c *gin.Context) {
 		return
 	} else {
 		fmt.Println("NFT 编辑成功 TxHash：", nftResult.Hash)
+	}
+	data := map[string]interface{}{
+		"hash":nftResult.Hash,
+		"operation_id": req.OpId,
+	}
+	c.JSONP(http.StatusOK, data)
+}
+func NFTDeleteHandler(c *gin.Context) {
+	var req req.NFTDelReq
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		fmt.Println("ctx.ShouldBindJSON err: ", err)
+		e := errors.Wrap(err)
+		c.JSON(response.HttpCode(e), response.FailError(e))
+		return
+	}
+	client := config.GetConfigClient()
+	cfg := config.GetConfig()
+	baseTx := types.BaseTx{
+		From:     req.UsrName,
+		Password: cfg.Server.Password,
+		Gas:      400000,
+		Memo:     "",
+		Mode:     types.Sync,
+	}
+	_,err1:=client.NFT.QueryNFT(req.ClsId,req.NFTId)
+	if err1 != nil {
+		e := errors.Wrap(err1)
+		c.JSON(response.HttpCode(e), response.FailError(e))
+		return
+	}
+	nftResult, err := client.NFT.BurnNFT(nft.BurnNFTRequest{
+		Denom:req.ClsId,
+		ID:req.NFTId,
+	}, baseTx)
+	if err != nil {
+		fmt.Println(fmt.Errorf("NFT 删除失败: %s", err.Error()))
+		e := errors.Wrap(err)
+		c.JSON(response.HttpCode(e), response.FailError(e))
+		return
+	} else {
+		fmt.Println("NFT 删除成功 TxHash：", nftResult.Hash)
 	}
 	data := map[string]interface{}{
 		"hash":nftResult.Hash,

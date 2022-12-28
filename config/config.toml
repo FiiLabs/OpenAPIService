@@ -1,0 +1,11 @@
+[database]
+node_uri= "mongodb://127.0.0.1:27017/?connect=direct&authSource=openapi"
+database= "openapi"
+
+[server]
+rpcAddress  = "http://localhost:26657"
+grpcAddress = "localhost:9090"
+chainID     = "testnet"
+algo        = "sm2"
+password    = "12345678"
+mnemonic    = "eagle marriage host height topple sorry exist nation screen affair bulk average medal flush candy alert amused alone hire clerk treat hybrid tip cake"

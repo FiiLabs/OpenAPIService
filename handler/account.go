@@ -11,10 +11,6 @@ import (
 	"github.com/irisnet/core-sdk-go/types"
 	"net/http"
 )
-var (
-	password         = "12345678"
-	mnemonic         = "eagle marriage host height topple sorry exist nation screen affair bulk average medal flush candy alert amused alone hire clerk treat hybrid tip cake"
-)
 
 func AccountHandler(c *gin.Context)  {
 	//name := c.PostForm("name")
@@ -28,13 +24,14 @@ func AccountHandler(c *gin.Context)  {
 		return
 	}
 	client := config.GetConfigClient()
-	address,mem, err := client.Key.Add(req.Name, password)
+	cfg := config.GetConfig()
+	address,mem, err := client.Key.Add(req.Name, cfg.Server.Password)
 	if err != nil {
 		e := errors.Wrap(err)
 		c.JSON(response.HttpCode(e), response.FailError(e))
 		return
 	}
-	addrAdmin, err := client.Key.Recover("admin", password,mnemonic)
+	addrAdmin, err := client.Key.Recover("admin", cfg.Server.Password,cfg.Server.Mnemonic)
 	if err != nil {
 		fmt.Println(fmt.Errorf("导入私钥失败: %s", err.Error()))
 		e := errors.Wrap(err)
@@ -44,7 +41,7 @@ func AccountHandler(c *gin.Context)  {
 	fmt.Println("address:", addrAdmin)
 	baseTx := types.BaseTx{
 		From:     "admin",
-		Password: password,
+		Password: cfg.Server.Password,
 		Gas:      400000,
 		Memo:     "",
 		Mode:     types.Sync,

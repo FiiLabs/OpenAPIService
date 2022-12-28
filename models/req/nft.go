@@ -30,3 +30,10 @@ type NFTEditReq struct {
 	UriHash           string  `json:"uri_hash"`
 	Data              string  `json:"data"`
 }
+
+type NFTDelReq struct {
+	UsrName           string  `json:"usr_name"`
+	OpId              string  `json:"operation_id"`
+	ClsId             string  `json:"class_id"`
+	NFTId             string  `json:"nft_id"`
+}
