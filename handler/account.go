@@ -31,7 +31,10 @@ func AccountHandler(c *gin.Context)  {
 		c.JSON(response.HttpCode(e), response.FailError(e))
 		return
 	}
-	addrAdmin, err := client.Key.Recover("admin", cfg.Server.Password,cfg.Server.Mnemonic)
+	addrAdmin, err :=client.Key.Show("admin", cfg.Server.Password)
+	if err != nil {
+		addrAdmin, err = client.Key.Recover("admin", cfg.Server.Password,cfg.Server.Mnemonic)
+	}
 	if err != nil {
 		fmt.Println(fmt.Errorf("导入私钥失败: %s", err.Error()))
 		e := errors.Wrap(err)
