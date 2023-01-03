@@ -33,7 +33,7 @@ const EnvNameConfigFilePath = "CONFIG_FILE_PATH"
 
 var conf Config
 
-func InitConfig()  error {
+func InitConfig(dao store.KeyDAO)  error {
 	var ConfigFilePath string
 
 	websit, found := os.LookupEnv(EnvNameConfigFilePath)
@@ -57,12 +57,22 @@ func InitConfig()  error {
 	}
 
 	fee, _ := types.ParseDecCoins("400000ugas")
+	bech32AddressPrefix := types.AddrPrefixCfg{
+		AccountAddr:   "metaosaa",
+		ValidatorAddr: "metaosva",
+		ConsensusAddr: "metaosca",
+		AccountPub:    "metaosap",
+		ValidatorPub:  "metaosvp",
+		ConsensusPub:  "metaoscp",
+	}
 	options := []types.Option{
 		types.AlgoOption(conf.Server.Algo),
-		types.KeyDAOOption(store.NewMemory(nil)),
+		//types.KeyDAOOption(store.NewMemory(nil)),
+		types.KeyDAOOption(dao),
 		types.TimeoutOption(10),
 		types.FeeOption(fee),
 		types.CachedOption(true),
+		types.Bech32AddressPrefixOption(&bech32AddressPrefix),
 	}
 	cfg, err := types.NewClientConfig(conf.Server.RpcAddress, conf.Server.GrpcAddress, conf.Server.ChainID, options...)
 	if err != nil {

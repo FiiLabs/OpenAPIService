@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/FiiLabs/OpenAPIService/config"
 	"github.com/qiniu/qmgo"
+	"github.com/qiniu/qmgo/options"
 )
 var (
 	_ctx  = context.Background()
@@ -50,6 +51,18 @@ func GetSrvConf() *config.ServerConf {
 	}
 	return &_conf.Server
 }
+
+func ensureIndexes(collectionName string, indexes []options.IndexModel) {
+	c := _cli.Database(GetDbConf().Database).Collection(collectionName)
+	if len(indexes) > 0 {
+		for _, v := range indexes {
+			if err := c.CreateOneIndex(context.Background(), v); err != nil {
+				fmt.Println("ensure index fail")
+			}
+		}
+	}
+}
+
 func ExecCollection(collectionName string, s func(*qmgo.Collection) error) error {
 	c := _cli.Database(GetDbConf().Database).Collection(collectionName)
 	return s(c)
