@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/FiiLabs/OpenAPIService/api_router"
 	"github.com/FiiLabs/OpenAPIService/config"
+	"github.com/FiiLabs/OpenAPIService/libs/pool"
 	"github.com/FiiLabs/OpenAPIService/models/do"
 	"github.com/FiiLabs/OpenAPIService/types/store"
 	"github.com/gin-gonic/gin"
@@ -11,8 +12,7 @@ import (
 )
 
 func main() {
-	dao,_ := store.NewMongoDB(nil)
-	err := config.InitConfig(dao)
+	conf, err := config.InitConfig()
 	if err != nil {
 		os.Exit(1)
 	}
@@ -25,8 +25,10 @@ func main() {
 			os.Exit(1)
 		}
 	}()
-	do.Init()
+	do.Init(conf)
 	store.EnsureIndexes()
+	dao,_ := store.NewMongoDB(nil)
+	pool.Init(conf,&dao)
 	router := gin.Default()
 
 	api_router.RegisterRouter(router)

@@ -3,6 +3,7 @@ module github.com/FiiLabs/OpenAPIService
 go 1.16
 
 require (
+	github.com/Workiva/go-datastructures v1.0.53
 	github.com/bianjieai/iritamod-sdk-go v0.0.0-20220708032705-9e8e301da3a8
 	github.com/bianjieai/opb-sdk-go v0.2.0
 	github.com/gin-gonic/gin v1.8.1
@@ -15,6 +16,7 @@ require (
 	github.com/irisnet/irismod-sdk-go/record v0.0.0-20221014104619-6f27c71cd5e4 // indirect
 	github.com/irisnet/irismod-sdk-go/service v0.0.0-20221014104619-6f27c71cd5e4 // indirect
 	github.com/irisnet/irismod-sdk-go/token v0.0.0-20221014104619-6f27c71cd5e4 // indirect
+	github.com/jolestar/go-commons-pool v2.0.0+incompatible
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/qiniu/qmgo v1.0.4

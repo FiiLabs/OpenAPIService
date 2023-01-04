@@ -1,11 +1,7 @@
 package config
 
 import (
-	"fmt"
-	opb "github.com/bianjieai/opb-sdk-go/pkg/app/sdk"
 	"github.com/bianjieai/opb-sdk-go/pkg/app/sdk/client"
-	"github.com/irisnet/core-sdk-go/types"
-	"github.com/irisnet/core-sdk-go/types/store"
 	"github.com/spf13/viper"
 	"os"
 )
@@ -22,6 +18,8 @@ type (
 	}
 	ServerConf struct {
 		RpcAddress   string `mapstructure:"rpcAddress"`
+		MaxConnectionNum   int    `mapstructure:"max_connection_num"`
+		InitConnectionNum  int    `mapstructure:"init_connection_num"`
 		GrpcAddress string `mapstructure:"grpcAddress"`
 		ChainID string `mapstructure:"chainID"`
 		Algo string `mapstructure:"algo"`
@@ -31,9 +29,7 @@ type (
 )
 const EnvNameConfigFilePath = "CONFIG_FILE_PATH"
 
-var conf Config
-
-func InitConfig(dao store.KeyDAO)  error {
+func InitConfig()  (*Config,error) {
 	var ConfigFilePath string
 
 	websit, found := os.LookupEnv(EnvNameConfigFilePath)
@@ -49,45 +45,12 @@ func InitConfig(dao store.KeyDAO)  error {
 
 	// Find and read the config file
 	if err := rootViper.ReadInConfig(); err != nil { // Handle errors reading the config file
-		return  err
+		return  nil,err
+	}
+	var cfg Config
+	if err := rootViper.Unmarshal(&cfg); err != nil {
+		return  nil,err
 	}
 
-	if err := rootViper.Unmarshal(&conf); err != nil {
-		return  err
-	}
-
-	fee, _ := types.ParseDecCoins("400000ugas")
-	//bech32AddressPrefix := types.AddrPrefixCfg{
-	//	AccountAddr:   "metaosaa",
-	//	ValidatorAddr: "metaosva",
-	//	ConsensusAddr: "metaosca",
-	//	AccountPub:    "metaosap",
-	//	ValidatorPub:  "metaosvp",
-	//	ConsensusPub:  "metaoscp",
-	//}
-	options := []types.Option{
-		types.AlgoOption(conf.Server.Algo),
-		//types.KeyDAOOption(store.NewMemory(nil)),
-		types.KeyDAOOption(dao),
-		types.TimeoutOption(10),
-		types.FeeOption(fee),
-		types.CachedOption(true),
-		//types.Bech32AddressPrefixOption(&bech32AddressPrefix),
-	}
-	cfg, err := types.NewClientConfig(conf.Server.RpcAddress, conf.Server.GrpcAddress, conf.Server.ChainID, options...)
-	if err != nil {
-		fmt.Println(fmt.Errorf("new client error: %s", err.Error()))
-		return err
-	}
-
-	conf.Client = opb.NewClient(cfg, nil)
-	return nil
-}
-
-func GetConfig() *Config {
-	return &conf
-}
-
-func GetConfigClient() *client.Client {
-	return &conf.Client
+	return &cfg, nil
 }

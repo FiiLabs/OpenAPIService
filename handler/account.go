@@ -2,8 +2,8 @@ package handler
 
 import (
 	"fmt"
-	"github.com/FiiLabs/OpenAPIService/config"
 	"github.com/FiiLabs/OpenAPIService/errors"
+	"github.com/FiiLabs/OpenAPIService/libs/pool"
 	"github.com/FiiLabs/OpenAPIService/models/req"
 	"github.com/FiiLabs/OpenAPIService/response"
 	Perm "github.com/bianjieai/iritamod-sdk-go/perm"
@@ -23,8 +23,8 @@ func AccountHandler(c *gin.Context)  {
 		c.JSON(response.HttpCode(e), response.FailError(e))
 		return
 	}
-	client := config.GetConfigClient()
-	cfg := config.GetConfig()
+	client := pool.GetClient()
+	cfg := pool.GetConfig()
 	address,mem, err := client.Key.Add(req.Name, cfg.Server.Password)
 	if err != nil {
 		e := errors.Wrap(err)

@@ -2,8 +2,8 @@ package handler
 
 import (
 	"fmt"
-	"github.com/FiiLabs/OpenAPIService/config"
 	"github.com/FiiLabs/OpenAPIService/errors"
+	"github.com/FiiLabs/OpenAPIService/libs/pool"
 	"github.com/FiiLabs/OpenAPIService/models/req"
 	"github.com/FiiLabs/OpenAPIService/response"
 	"github.com/gin-gonic/gin"
@@ -21,8 +21,8 @@ func NFTHandler(c *gin.Context) {
 		c.JSON(response.HttpCode(e), response.FailError(e))
 		return
 	}
-	client := config.GetConfigClient()
-	cfg := config.GetConfig()
+	client := pool.GetClient()
+	cfg := pool.GetConfig()
 	baseTx := types.BaseTx{
 		From:     req.UsrName,
 		Password: cfg.Server.Password,
@@ -63,8 +63,8 @@ func NFTTransferHandler(c *gin.Context) {
 		c.JSON(response.HttpCode(e), response.FailError(e))
 		return
 	}
-	client := config.GetConfigClient()
-	cfg := config.GetConfig()
+	client := pool.GetClient()
+	cfg := pool.GetConfig()
 	baseTx := types.BaseTx{
 		From:     req.UsrName,
 		Password: cfg.Server.Password,
@@ -112,8 +112,8 @@ func NFTEditHandler(c *gin.Context) {
 		c.JSON(response.HttpCode(e), response.FailError(e))
 		return
 	}
-	client := config.GetConfigClient()
-	cfg := config.GetConfig()
+	client := pool.GetClient()
+	cfg := pool.GetConfig()
 	baseTx := types.BaseTx{
 		From:     req.UsrName,
 		Password: cfg.Server.Password,
@@ -158,8 +158,8 @@ func NFTDeleteHandler(c *gin.Context) {
 		c.JSON(response.HttpCode(e), response.FailError(e))
 		return
 	}
-	client := config.GetConfigClient()
-	cfg := config.GetConfig()
+	client := pool.GetClient()
+	cfg := pool.GetConfig()
 	baseTx := types.BaseTx{
 		From:     req.UsrName,
 		Password: cfg.Server.Password,

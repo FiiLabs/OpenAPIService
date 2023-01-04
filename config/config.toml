@@ -5,6 +5,8 @@ database= "openapi"
 [server]
 rpcAddress  = "http://localhost:26657"
 grpcAddress = "localhost:9090"
+max_connection_num=100
+init_connection_num=5
 chainID     = "testnet"
 algo        = "sm2"
 password    = "12345678"

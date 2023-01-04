@@ -12,13 +12,12 @@ var (
 	_conf *config.Config
 	_cli  *qmgo.Client
 )
-func Init() {
-	_conf = config.GetConfig()
+func Init(conf *config.Config) {
 	var maxPoolSize uint64 = 4096
-
+	_conf = conf
 	client, err := qmgo.NewClient(_ctx, &qmgo.Config{
-		Uri:         _conf.DataBase.NodeUri,
-		Database:    _conf.DataBase.Database,
+		Uri:         conf.DataBase.NodeUri,
+		Database:    conf.DataBase.Database,
 		MaxPoolSize: &maxPoolSize,
 	})
 	if err != nil {
