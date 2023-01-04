@@ -57,14 +57,14 @@ func InitConfig(dao store.KeyDAO)  error {
 	}
 
 	fee, _ := types.ParseDecCoins("400000ugas")
-	bech32AddressPrefix := types.AddrPrefixCfg{
-		AccountAddr:   "metaosaa",
-		ValidatorAddr: "metaosva",
-		ConsensusAddr: "metaosca",
-		AccountPub:    "metaosap",
-		ValidatorPub:  "metaosvp",
-		ConsensusPub:  "metaoscp",
-	}
+	//bech32AddressPrefix := types.AddrPrefixCfg{
+	//	AccountAddr:   "metaosaa",
+	//	ValidatorAddr: "metaosva",
+	//	ConsensusAddr: "metaosca",
+	//	AccountPub:    "metaosap",
+	//	ValidatorPub:  "metaosvp",
+	//	ConsensusPub:  "metaoscp",
+	//}
 	options := []types.Option{
 		types.AlgoOption(conf.Server.Algo),
 		//types.KeyDAOOption(store.NewMemory(nil)),
@@ -72,7 +72,7 @@ func InitConfig(dao store.KeyDAO)  error {
 		types.TimeoutOption(10),
 		types.FeeOption(fee),
 		types.CachedOption(true),
-		types.Bech32AddressPrefixOption(&bech32AddressPrefix),
+		//types.Bech32AddressPrefixOption(&bech32AddressPrefix),
 	}
 	cfg, err := types.NewClientConfig(conf.Server.RpcAddress, conf.Server.GrpcAddress, conf.Server.ChainID, options...)
 	if err != nil {

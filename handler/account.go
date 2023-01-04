@@ -41,7 +41,8 @@ func AccountHandler(c *gin.Context)  {
 		c.JSON(response.HttpCode(e), response.FailError(e))
 		return
 	}
-	fmt.Println("address:", addrAdmin)
+	fmt.Println("address:", address)
+	fmt.Println("addrAdmin:", addrAdmin)
 	baseTx := types.BaseTx{
 		From:     "admin",
 		Password: cfg.Server.Password,
@@ -50,10 +51,26 @@ func AccountHandler(c *gin.Context)  {
 		Mode:     types.Sync,
 	}
 	fee, _ := types.ParseDecCoins("8000000ugas")
-	client.Bank.Send(address,fee,baseTx)
+	sendResult ,err := client.Bank.Send(address,fee,baseTx)
+	if err != nil {
+		fmt.Println(fmt.Errorf("send失败: %s", err.Error()))
+		e := errors.Wrap(err)
+		c.JSON(response.HttpCode(e), response.FailError(e))
+		return
+	} else {
+		fmt.Println("send成功 TxHash：", sendResult.Hash)
+	}
 	var roles [1]Perm.Role
 	roles[0] = Perm.RolePowerUser
-	client.Perm.AssignRoles(address, roles[:],baseTx)
+	roleResult ,err :=client.Perm.AssignRoles(address, roles[:],baseTx)
+	if err != nil {
+		fmt.Println(fmt.Errorf("AssignRoles失败: %s", err.Error()))
+		e := errors.Wrap(err)
+		c.JSON(response.HttpCode(e), response.FailError(e))
+		return
+	} else {
+		fmt.Println("AssignRoles成功 TxHash：", roleResult.Hash)
+	}
 	datax := map[string]interface{}{
 		"account": address,
 		"name": req.Name,

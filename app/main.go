@@ -31,5 +31,5 @@ func main() {
 
 	api_router.RegisterRouter(router)
 
-	router.Run(":8080")
+	router.Run(":30000")
 }
