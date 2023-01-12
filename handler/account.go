@@ -43,14 +43,15 @@ func AccountHandler(c *gin.Context)  {
 	}
 	fmt.Println("address:", address)
 	fmt.Println("addrAdmin:", addrAdmin)
+	fmt.Println("mnemonic:", mem)
 	baseTx := types.BaseTx{
 		From:     "admin",
 		Password: cfg.Server.Password,
-		Gas:      400000,
+		Gas:      20000,
 		Memo:     "",
 		Mode:     types.Sync,
 	}
-	fee, _ := types.ParseDecCoins("8000000ugas")
+	fee, _ := types.ParseDecCoins("10000000000ugas")
 	sendResult ,err := client.Bank.Send(address,fee,baseTx)
 	if err != nil {
 		fmt.Println(fmt.Errorf("send失败: %s", err.Error()))
@@ -74,7 +75,7 @@ func AccountHandler(c *gin.Context)  {
 	datax := map[string]interface{}{
 		"account": address,
 		"name": req.Name,
-		"mnemonic":mem,
+		//"mnemonic":mem,
 		"operation_id": req.OperationId,
 	}
 	data := map[string]interface{}{

@@ -61,14 +61,14 @@ func GetConfig() *config.Config {
 }
 func newClient(nodeUrl string,grpcUrl string) (*Client, error) {
 	fee, _ := types.ParseDecCoins("400000ugas")
-	//bech32AddressPrefix := types.AddrPrefixCfg{
-	//	AccountAddr:   "metaosaa",
-	//	ValidatorAddr: "metaosva",
-	//	ConsensusAddr: "metaosca",
-	//	AccountPub:    "metaosap",
-	//	ValidatorPub:  "metaosvp",
-	//	ConsensusPub:  "metaoscp",
-	//}
+	bech32AddressPrefix := types.AddrPrefixCfg{
+		AccountAddr:   "metaos",
+		ValidatorAddr: "metaosvaloper",
+		ConsensusAddr: "metaosvalcons",
+		AccountPub:    "metaospub",
+		ValidatorPub:  "metaosvaloperpub",
+		ConsensusPub:  "metaosvalconspub",
+	}
 	options := []types.Option{
 		types.AlgoOption(_conf.Server.Algo),
 		//types.KeyDAOOption(store.NewMemory(nil)),
@@ -76,7 +76,7 @@ func newClient(nodeUrl string,grpcUrl string) (*Client, error) {
 		types.TimeoutOption(10),
 		types.FeeOption(fee),
 		types.CachedOption(true),
-		//types.Bech32AddressPrefixOption(&bech32AddressPrefix),
+		types.Bech32AddressPrefixOption(&bech32AddressPrefix),
 	}
 	cfg, err := types.NewClientConfig(nodeUrl, grpcUrl, _conf.Server.ChainID, options...)
 	if err != nil {

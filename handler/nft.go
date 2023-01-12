@@ -26,7 +26,7 @@ func NFTHandler(c *gin.Context) {
 	baseTx := types.BaseTx{
 		From:     req.UsrName,
 		Password: cfg.Server.Password,
-		Gas:      400000,
+		Gas:      20000,
 		Memo:     "",
 		Mode:     types.Sync,
 	}
@@ -68,7 +68,7 @@ func NFTTransferHandler(c *gin.Context) {
 	baseTx := types.BaseTx{
 		From:     req.UsrName,
 		Password: cfg.Server.Password,
-		Gas:      400000,
+		Gas:      20000,
 		Memo:     "",
 		Mode:     types.Sync,
 	}
@@ -117,7 +117,7 @@ func NFTEditHandler(c *gin.Context) {
 	baseTx := types.BaseTx{
 		From:     req.UsrName,
 		Password: cfg.Server.Password,
-		Gas:      400000,
+		Gas:      20000,
 		Memo:     "",
 		Mode:     types.Sync,
 	}
@@ -163,7 +163,7 @@ func NFTDeleteHandler(c *gin.Context) {
 	baseTx := types.BaseTx{
 		From:     req.UsrName,
 		Password: cfg.Server.Password,
-		Gas:      400000,
+		Gas:      20000,
 		Memo:     "",
 		Mode:     types.Sync,
 	}

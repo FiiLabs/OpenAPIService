@@ -28,7 +28,7 @@ func NFTClassHandler(c *gin.Context) {
 	baseTx := types.BaseTx{
 		From:     req.UsrName,
 		Password: cfg.Server.Password,
-		Gas:      400000,
+		Gas:      20000,
 		Memo:     "",
 		Mode:     types.Sync,
 	}
@@ -71,7 +71,7 @@ func NFTClassTransferHandler(c *gin.Context) {
 	baseTx := types.BaseTx{
 		From:     req.UsrName,
 		Password: cfg.Server.Password,
-		Gas:      400000,
+		Gas:      20000,
 		Memo:     "",
 		Mode:     types.Sync,
 	}
